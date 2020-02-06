@@ -1,0 +1,26 @@
+name: Build and Deploy
+on:
+    push:
+        tags:
+            -v*
+jobs:
+    build:
+        name: Build app
+            runs-on: ubuntu-latest
+            steps:
+                - name: Checkout
+                    uses: actions/checkout@v2.0.0
+                - name: Setup Node.js for use with actions
+                    uses: actions/setup-node@v1.1.0
+                    with:
+                        node-version: '10.x'
+                - run: yarn install
+                - run: yarn build
+                - name: Upload artifact
+                    uses: actions/upload-artifact@v1.0.0
+                        - run: mkdir -p path/to/artifact
+                        - run: echo hello > path/to/artifact/world.txt
+                        - uses: actions/upload-artifact@v1
+                        with:
+                            name: my-artifact
+                            path: path/to/artifact
