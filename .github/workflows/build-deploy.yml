@@ -18,3 +18,21 @@ jobs:
               with:
                 name: app
                 path: build/
+    delpoy: 
+        name: deloy to s3
+        runs-on: ubuntu-latest
+        needs: build
+        steps: 
+            - uses: actions/download-artifact@v1
+              with:
+                name : app
+            - uses: actions/setup-python@v1
+              with: 
+                python-version: '3.x'
+            - run: pip install awscli
+            - uses: aws-actions/configure-aws-credentials@v1
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: "eu-west-3"
+            - run: aws s3 sync application s3://${{ secrets.AWS_S3_BUCKET }}
